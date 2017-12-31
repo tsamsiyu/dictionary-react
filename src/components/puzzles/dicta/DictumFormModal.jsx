@@ -28,6 +28,7 @@ export class DictumFormModal extends React.Component {
 
     const labels = {
       'spelling': 'Original',
+      'groups[].explanation': 'Group',
       'groups[].translations[].spelling': 'Translation',
     };
 

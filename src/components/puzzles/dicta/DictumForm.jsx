@@ -3,8 +3,7 @@ import GroupInput from "components/ui/controls/GroupInput";
 import { observer } from 'mobx-react';
 import Fa from 'react-fontawesome';
 import "components/puzzles/dicta/DictumForm.scss";
-import {Button} from "react-bootstrap";
-import InputBox from 'components/ui/controls/InputBox';
+import { Button, Panel } from "react-bootstrap";
 import {TranslationBox} from "./TranslationBox";
 import classNames from 'classnames';
 
@@ -19,12 +18,30 @@ export class DictumForm extends React.Component {
     }
   }
 
-  remove(group, translation) {
+  delete(group, translation) {
+    console.log(translation);
     if (translation !== null) {
       translation.del();
     } else {
       group.del();
     }
+  }
+
+  renderGroupHeader(group) {
+    const btnGroupDropClass = classNames('translation-group-drop', {inactive: this.props.form.$('groups').size < 2});
+    return (
+        <div>
+          <GroupInput field={group.$('explanation')} hideErrors={true} noLabel={true}/>
+          <div className="translation-group-actions">
+            <Button onClick={this.add.bind(this, group)} bsStyle="link" className="translation-group-add">
+              <Fa name="plus"/>
+            </Button>
+            <Button onClick={this.delete.bind(this, group, null)} bsStyle="link" className={btnGroupDropClass}>
+              <Fa name="trash"/>
+            </Button>
+          </div>
+        </div>
+    );
   }
 
   render() {
@@ -42,32 +59,19 @@ export class DictumForm extends React.Component {
             { this.props.type === 'simple' && this.props.form.$('groups').map((group) => (
               <TranslationBox key={group.key}
                               field={group.$('translations[0].spelling')}
-                              delete={this.remove.bind(this, group, null)}
+                              delete={this.delete.bind(this, group, null)}
                               canDelete={this.props.form.$('groups').size > 1}/>
             )) }
 
             { this.props.type === 'complex' && this.props.form.$('groups').map((group) => (
-              <div key={group.key} className="complex-translation">
-                <div className="group-control-wrap">
-                  <Button onClick={this.add.bind(this, group)} bsStyle="link"><Fa name="plus"/></Button>
-                  <Button onClick={this.remove.bind(this, group, null)}
-                          bsStyle="link"
-                          className={classNames({inactive: this.props.form.$('groups').size < 2})}>
-                    <Fa name="trash"/>
-                  </Button>
-                  <label className="control-label" htmlFor={group.id}>Group:</label>
-                  <InputBox field={group.$('explanation')} hideErrors={true}>
-                      <input {...group.$(`explanation`).bind()} className="form-control"/>
-                  </InputBox>
-                </div>
+              <Panel key={group.key} header={this.renderGroupHeader(group)}  className="translation-group">
                 { group.$('translations').map((translation) => (
-                  <TranslationBox key={translation.key}
-                                  field={translation.$('spelling')}
-                                  delete={this.remove.bind(this, group, translation)}
-                                  canDelete={group.$('translations').size > 1}/>
+                <TranslationBox key={translation.key}
+                                field={translation.$('spelling')}
+                                delete={this.delete.bind(this, group, translation)}
+                                canDelete={group.$('translations').size > 1}/>
                 )) }
-                <hr/>
-              </div>
+              </Panel>
             )) }
 
           </fieldset>
