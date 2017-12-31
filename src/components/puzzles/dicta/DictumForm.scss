@@ -1,0 +1,59 @@
+.translation-control-wrap {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .translation-actions {
+    width: 7%;
+    text-align: center;
+    button:focus, button:active {
+      outline: none;
+    }
+  }
+}
+
+#translation-legend {
+  font-size: 14px;
+  font-weight: bold;
+  button {
+    display: inline-block;
+    padding: 1px;
+    margin-right: 3px;
+    margin-bottom: 2px;
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+  p {
+    display: inline-block;
+  }
+}
+
+.group-control-wrap {
+  display: flex;
+  align-items: center;
+  button {
+    padding: 1px;
+    margin-right: 3px;
+    margin-bottom: 2px;
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+  label {
+    margin-right: 10px;
+  }
+  .form-group {
+    width: 100%;
+  }
+  input {
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: inset 0 -1px 0px rgba(0, 0, 0, .075);
+    &:focus {
+      box-shadow: inset 0 -1px 0px rgba(0,0,0,.075), 0px 8px 8px -8px rgba(102, 175, 233, .6);
+    }
+  }
+}
