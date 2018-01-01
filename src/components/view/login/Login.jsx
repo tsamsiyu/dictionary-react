@@ -21,7 +21,7 @@ class Login extends React.Component {
       ]
     }, {
       hooks: {
-        onSuccess(data) {
+        onSuccess: (data) => {
           this.props.authStore.login(data.$('email').value, data.$('password').value)
         }
       }

@@ -4,6 +4,7 @@ import { observer } from 'mobx-react';
 import classNames from 'classnames';
 import {Button} from "react-bootstrap";
 import Fa from 'react-fontawesome';
+import 'components/puzzles/dicta/TranslationBox.scss';
 
 @observer
 export class TranslationBox extends React.Component {

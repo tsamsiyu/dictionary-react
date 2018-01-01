@@ -1,0 +1,26 @@
+@import 'segments/fonts.scss';
+@import 'segments/mixins.scss';
+@import 'segments/colors.scss';
+@import 'segments/as-table.scss';
+@import 'segments/bootstrap/bootstrap.scss';
+
+.inactive {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.mg-b-10 {
+   margin-bottom: 10px; 
+}
+
+.pd-0 {
+   padding: 0; 
+}
+
+.inner { 
+  display: inline; 
+}
+
+.no-outline:focus, .no-outline:active { 
+  outline: none !important; 
+}

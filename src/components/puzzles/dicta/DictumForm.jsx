@@ -10,6 +10,7 @@ import classNames from 'classnames';
 
 @observer
 export class DictumForm extends React.Component {
+ 
   add(group) {
     if (group) {
       group.$('translations').add();
@@ -31,7 +32,7 @@ export class DictumForm extends React.Component {
     const btnGroupDropClass = classNames('translation-group-drop', {inactive: this.props.form.$('groups').size < 2});
     return (
         <div>
-          <GroupInput field={group.$('explanation')} hideErrors={true} noLabel={true}/>
+          <GroupInput field={group.$('explanation')} hideErrors={true} noLabel={true} placeholder="Group"/>
           <div className="translation-group-actions">
             <Button onClick={this.add.bind(this, group)} bsStyle="link" className="translation-group-add">
               <Fa name="plus"/>
@@ -46,9 +47,9 @@ export class DictumForm extends React.Component {
 
   render() {
     return (
-      <div>
+      <div id="dictum-form">
         <form>
-          <GroupInput field={this.props.form.$('spelling')} hideErrors={true}/>
+          <GroupInput field={this.props.form.$('spelling')} hideErrors={true} placeholder="Original" noLabel={true}/>
 
           <fieldset>
             <legend id="translation-legend">

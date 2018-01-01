@@ -11,10 +11,10 @@ import { TopNav } from 'components/ui/TopNav';
 import "components/view/app/App.css";
 import { DictumList } from "components/view/dicta/DictumList";
 
-
+@withRouter
 @inject('authStore')
 @observer
-class App extends React.Component {
+export class App extends React.Component {
 
   render() {
     return (
@@ -43,6 +43,5 @@ class App extends React.Component {
       </div>
     );
   }
+ 
 }
-
-export default withRouter(App);

@@ -4,16 +4,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-// 3-rd assets
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/css/bootstrap-theme.css';
 import "font-awesome/css/font-awesome.css";
+import 'assets/styles/common.scss';
+// import 'bootstrap-sass/assets/javascripts/bootstrap.min'; // need jquery
 
-// own assets
-import 'assets/styles/global.scss';
-
-// providers
-import App from 'components/view/app/App';
+import { App } from 'components/view/app/App';
 import registerServiceWorker from 'registerServiceWorker';
 
 import { BrowserRouter } from 'react-router-dom';

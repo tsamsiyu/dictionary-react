@@ -2,11 +2,11 @@ import React from 'react';
 import { observer } from 'mobx-react';
 import classNames from 'classnames';
 
-export default observer(({field, hideErrors, noLabel}) => {
+export default observer(({field, hideErrors, noLabel, placeholder}) => {
   return (
     <div className={classNames('form-group', {'has-error': field.error})}>
       { !noLabel && (<label htmlFor={field.id} className="control-label">{field.label}</label>) }
-      <input {...field.bind()} className="form-control"/>
+      <input {...field.bind()} className="form-control" placeholder={placeholder}/>
       {!hideErrors && field.error && (<p className="text-danger">{field.error}</p>)}
     </div>
   );

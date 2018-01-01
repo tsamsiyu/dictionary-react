@@ -1,89 +1,69 @@
-#translation-legend {
-  font-size: 14px;
-  font-weight: bold;
-  button {
-    display: inline-block;
-    padding: 1px;
-    margin-right: 3px;
-    margin-bottom: 2px;
-    &:focus, &:active {
-      outline: none;
+#dictum-form {
+  #translation-legend {
+    font-size: 14px;
+    font-weight: bold;
+    button {
+      display: inline-block;
+      padding: 1px;
+      margin-right: 3px;
+      margin-bottom: 2px;
+      &:focus, &:active {
+        outline: none;
+      }
+    }
+    p {
+      display: inline-block;
     }
   }
-  p {
-    display: inline-block;
-  }
-}
-
-.translation-group {
-  .panel-heading {
-    padding: 0;
-  }
-  .panel-body {
-    padding: 5px 0 0 0;
-    .translation-box {
-      margin: 0 1px 5px 3px;
+  
+  .translation-group {
+    .panel-heading {
+      padding: 0;
+    }
+    .panel-body {
+      padding: 5px 0 0 0;
+    }
+    .panel-title {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      .translation-actions {
-        text-align: center;
-        button {
-          padding: 0;
+  
+      .form-group {
+        margin: 0 10px 3px 10px;
+        width: 100%;
+        input {
           height: 100%;
-          padding: 0 3px;
+          width: 100%;
+          padding: 1px;
+          margin: 0;
+          background: none;
+          border-top: none;
+          border-left: none;
+          border-right: none;
+          border-bottom-left-radius: 0;
+          border-bottom-right-radius: 0;
+          box-shadow: inset 0 -1px 0px rgba(0, 0, 0, .075);
+          &:focus {
+            box-shadow: inset 0 -1px 0px rgba(0,0,0,.075), 0px 8px 8px -8px rgba(102, 175, 233, .6);
+          }
+          &:focus, &:active {
+            outline: none;
+          }
+        }
+      }
+  
+      .translation-group-actions {
+        display: flex;
+        justify-content: space-around;
+        flex-direction: column;
+        margin: 1px;
+        button {
+          padding: 1px;
           font-size: 12px;
           line-height: 12px;
-        }
-        button:focus, button:active {
-          outline: none;
+          height: 13px;
         }
       }
-      input {
-        height: 28px;
-      }
-    }
+    }  
   }
-  .panel-title {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .form-group {
-      margin: 0 10px 3px 10px;
-      width: 100%;
-      input {
-        height: 100%;
-        width: 100%;
-        padding: 1px;
-        margin: 0;
-        background: none;
-        border-top: none;
-        border-left: none;
-        border-right: none;
-        border-bottom-left-radius: 0;
-        border-bottom-right-radius: 0;
-        box-shadow: inset 0 -1px 0px rgba(0, 0, 0, .075);
-        &:focus {
-          box-shadow: inset 0 -1px 0px rgba(0,0,0,.075), 0px 8px 8px -8px rgba(102, 175, 233, .6);
-        }
-        &:focus, &:active {
-          outline: none;
-        }
-      }
-    }
-
-    .translation-group-actions {
-      display: flex;
-      justify-content: space-around;
-      flex-direction: column;
-      margin: 1px;
-      button {
-        padding: 1px;
-        font-size: 12px;
-        line-height: 12px;
-        height: 13px;
-      }
-    }
-  }  
 }

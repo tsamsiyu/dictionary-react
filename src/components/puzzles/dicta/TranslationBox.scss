@@ -1,0 +1,22 @@
+.translation-box {
+    margin: 0 1px 5px 3px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .translation-actions {
+      text-align: center;
+      button {
+        padding: 0;
+        height: 100%;
+        padding: 0 3px;
+        font-size: 12px;
+        line-height: 12px;
+      }
+      button:focus, button:active {
+        outline: none;
+      }
+    }
+    input {
+      height: 28px;
+    }
+  }
