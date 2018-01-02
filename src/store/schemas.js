@@ -1,13 +1,20 @@
 import { schema } from 'normalizr';
 
-const translation = schema.Entity('translation');
-const translationGroup = schema.Entity('translationGroup');
-const word = schema.Entity('words');
+export const translationDictum = new schema.Entity('translationDictum');
+export const translationDictumGroup = new schema.Entity('translationDictumGroup');
+export const originalDictum = new schema.Entity('originalDictum');
 
-word.define({translations: [translation]});
-word.define({translationGroups: [translationGroup]});
+originalDictum.define({translations: [translationDictum]});
+originalDictum.define({translation_groups: [translationDictumGroup]});
 
-translation.define({group: translationGroup});
-translation.define({word});
+translationDictum.define({group: translationDictumGroup});
+translationDictum.define({original: originalDictum});
 
-translationGroup.define({word});
+translationDictumGroup.define({originalDictum});
+translationDictumGroup.define({translations: [translationDictum]});
+
+export const schemas = {
+    'translationDictum': translationDictum,
+    'ranslationDictumGroup': translationDictumGroup,
+    'originalDictum': originalDictum,
+}

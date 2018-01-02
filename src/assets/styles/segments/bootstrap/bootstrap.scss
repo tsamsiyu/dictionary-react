@@ -49,8 +49,4 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/utilities.scss";
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap/responsive-utilities.scss";
 
-.has-error input::placeholder, textarea::placeholder {
-    color: $brand-danger;
-}
-
 

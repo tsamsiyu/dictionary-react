@@ -1,8 +1,11 @@
 import React from 'react';
 import { observer, inject } from 'mobx-react';
-import { DictumRow } from "components/puzzles/dicta/DictumRow";
-import {DictumFormModal} from "components/puzzles/dicta/DictumFormModal";
-import {ValidationError} from "errors/ValidationError";
+import { DictumFormModal } from "components/puzzles/dicta/DictumFormModal";
+import { ValidationError } from "errors/ValidationError";
+import { Grid } from 'components/ui/grid/Grid';
+import { Button } from 'react-bootstrap';
+import Fa from 'react-fontawesome';
+import Dotdotdot from 'react-dotdotdot'
 
 @inject('dictaStore')
 @observer
@@ -30,8 +33,46 @@ export class DictumList extends React.Component {
     this.setState({adding: true});
   }
 
+  drop(dictum) {
+
+  }
+
   componentWillMount() {
     this.props.dictaStore.load();
+    this.columns = [
+      {
+        key: 'id',
+        title: 'ID',
+      },
+      {
+        key: 'spelling',
+        title: 'Original',
+      },
+      {
+        key: 'translation',
+        title: 'Translation',
+        value: (row) => {
+          return (
+            <Dotdotdot clamp='auto'>
+              { row.translations.map((t) => t.spelling).join(', ') }
+            </Dotdotdot>
+          )
+        }
+      },
+      {
+        key: 'action',
+        title: '',
+        value: (row) => {
+          return (
+            <div className="dictum-actions">
+              <Button bsStyle="link" className="pd-0" onClick={this.drop.bind(this, row)}>
+                <Fa name="trash"/>
+              </Button>
+            </div>
+          )
+        }
+      }
+    ];
   }
 
   render() {
@@ -39,20 +80,7 @@ export class DictumList extends React.Component {
       <div className="row">
         <button type="button" className="btn btn-primary mg-b-10" onClick={this.add.bind(this)}>New</button>
 
-        <table className="table table-bordered">
-          <thead>
-            <tr className="text-center">
-              <th>Original</th>
-              <th>Translations</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            { this.props.dictaStore.list.map((word, ind) => (
-              <DictumRow ind={ind} word={word} key={ind}/>
-            )) }
-          </tbody>
-        </table>
+        <Grid columns={this.columns} rows={this.props.dictaStore.originalDicta} />
 
         <DictumFormModal isOpen={this.state.adding}
                          errors={this.state.formErrors}

@@ -1,16 +1,20 @@
 import { observable, action } from 'mobx';
 import { http } from 'bus';
-import {ValidationError} from "errors/ValidationError";
-// import { normalize } from 'normalizr';
+import { ValidationError } from "errors/ValidationError";
+import { normalize } from 'normalizr';
+import { originalDictum } from 'store/schemas';
+import { stores } from 'bus';
 
 export class Dicta {
-  @observable list = [];
+  @observable originalDicta = [];
 
   @action('load')
   load() {
     return http.get('dicta')
       .then((response) => {
-        console.log(response.data);
+        const flatList = normalize(response.data.data, [originalDictum]);
+        const models = stores.containerStore.putFlatList(flatList.entities);
+        this.originalDicta = Object.values(models.originalDictum);
       }).catch((fail) => {
         console.error(fail);
       });

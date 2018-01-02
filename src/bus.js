@@ -1,6 +1,7 @@
 import Http from 'services/Http';
 import Storage from 'facades/Storage';
-import Auth from 'store/Auth';
+import { Auth } from 'store/Auth';
+import { Container } from 'store/Container';
 import { Dicta } from 'store/Dicta';
 import { trimEnd } from 'lodash';
 
@@ -20,4 +21,5 @@ export const appName = process.env.REACT_APP_NAME;
 export const stores = {
   authStore: new Auth(),
   dictaStore: new Dicta(),
+  containerStore: new Container(),
 };

@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { http } from 'bus';
 
-class Auth {
+export class Auth {
   @observable loaded = false;
   @observable user;
   @observable isAuthenticated = false;
@@ -34,5 +34,3 @@ class Auth {
     })
   }
 }
-
-export default Auth;
