@@ -46,14 +46,13 @@ export class DictumFormModal extends React.Component {
       dictum = this.props.dictum;
     }
 
-    this.form = new Form({fields, labels, values: dictum});
+    this.form = new Form({fields, labels, values: dictum, hooks: {onSuccess: this.save}});
   }
 
   componentWillUpdate(newProps) {
     if (newProps.errors) {
       this.form.showErrors(false);
       this.form.fillErrors(newProps.errors);
-      console.log(this.form.errors());
     }
   }
 
@@ -77,9 +76,7 @@ export class DictumFormModal extends React.Component {
     return (
       <Modal show={this.props.isOpen} onHide={this.props.onHide}>
         <Modal.Header>
-          <h4 className="pull-left">
-            Dictum form
-          </h4>
+          <h4 className="pull-left">Dictum form</h4>
           <div id="form-type" className="pull-right">
             <button className={classNames({'active' : this.state.formType === 'simple'})}
                     title="Simple"

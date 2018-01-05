@@ -21,7 +21,11 @@ export class DictumList extends React.Component {
   }
 
   saveChanges(values) {
-    this.props.dictaStore.create(values).catch((err) => {
+    this.props.dictaStore.create(values)
+    .then(() => {
+      this.setState({adding: false});
+    })
+    .catch((err) => {
       if (err instanceof ValidationError) {
         this.setState({formErrors: err.fails})
       }
@@ -34,7 +38,7 @@ export class DictumList extends React.Component {
   }
 
   drop(dictum) {
-
+    this.props.dictaStore.remove(dictum);
   }
 
   componentWillMount() {
@@ -54,7 +58,7 @@ export class DictumList extends React.Component {
         value: (row) => {
           return (
             <Dotdotdot clamp='auto'>
-              { row.translations.map((t) => t.spelling).join(', ') }
+              { row.translations.map((t) => t ? t.spelling : '').join(', ') }
             </Dotdotdot>
           )
         }

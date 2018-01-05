@@ -1,6 +1,6 @@
 export class Model {
 
-    constructor(container, schema, data) {
+    constructor(container, schema) {
         this.container = container;
         this.schema = schema;
 
@@ -14,7 +14,6 @@ export class Model {
                     reducer[name] = {
                         name,
                         key: relationSchema[0].key,
-                        id: data[relationSchema[0].key],
                         list: true,
                         schema: relationSchema[0],
                     };
@@ -22,7 +21,6 @@ export class Model {
                     reducer[name] = {
                         name,
                         key: relationSchema.key,
-                        id: data[relationSchema.key],
                         list: false,
                         schema: relationSchema,
                     };
@@ -30,13 +28,16 @@ export class Model {
                 return reducer;
             }, {}),
         });
+    }
 
+    populate(data) {
         if (typeof data === 'object') {
             this._initialData = {};
             Object.keys(data).forEach((attribute) => {
                 let value;
                 if (this.relations[attribute]) {
-                    value = container.mapById(this.relations[attribute].key, data[attribute]);
+                    value = this.container.mapById(this.relations[attribute].key, data[attribute]);
+                    console.log(attribute, this.relations[attribute].key,  data[attribute], value);
                 } else {
                     value = data[attribute];
                 }

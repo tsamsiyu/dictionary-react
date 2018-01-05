@@ -14,6 +14,7 @@ export class Dicta {
       .then((response) => {
         const flatList = normalize(response.data.data, [originalDictum]);
         const models = stores.containerStore.putFlatList(flatList.entities);
+        console.log(models);
         this.originalDicta = Object.values(models.originalDictum);
       }).catch((fail) => {
         console.error(fail);
@@ -25,13 +26,11 @@ export class Dicta {
     return new Promise((resolve, reject) => {
       http.post('dicta', object)
         .then((response) => {
-          console.log(response);
           resolve(response.data);
         })
         .catch((fail) => {
           if (fail.response) {
             if (String(fail.response.status) === '422') {
-              console.log(fail.response.data);
               reject(new ValidationError(fail.response.data));
             } else {
               reject(fail.response.data);
@@ -43,64 +42,31 @@ export class Dicta {
     });
   }
 
-  // @action('add')
-  // add() {
-  //   this.list.push(new Word())
-  // }
-  //
-  // destroyIndex(ind) {
-  //   return this.destroy(this.list[ind]);
-  // }
-  //
-  // @action('destroy')
-  // destroy(word) {
-  //   return new Promise((resolve, reject) => {
-  //     const ind = this.list.indexOf(word);
-  //     if (ind > -1) {
-  //       if (word.isNew()) {
-  //         this.list.splice(ind, 1);
-  //         resolve();
-  //       } else {
-  //         return http.delete('dicta/' + word.id).then(() => {
-  //           this.list.splice(ind, 1);
-  //           resolve();
-  //         }).catch((fail) => {
-  //           reject(fail);
-  //         })
-  //       }
-  //     } else {
-  //       reject('There is not such element in collection');
-  //     }
-  //   });
-  // }
-  //
-  // @action('create')
-  // create(word) {
-  //   return http.post('dicta/new', word)
-  //     .then((response) => {
-  //       this.list.push(new Word(response.model));
-  //     }).catch((fail) => {
-  //       // TODO
-  //       throw new Error(fail);
-  //     })
-  // }
-  //
-  // @action('update')
-  // update(word) {
-  //   return new Promise((resolve, reject) => {
-  //     const ind = this.list.indexOf(word);
-  //     if (ind > -1) {
-  //       http.put('dicta/' + word.id, word)
-  //         .then((response) => {
-  //           this.list[ind] = new Word(response.data);
-  //           resolve();
-  //         })
-  //         .catch((fail) => {
-  //           reject(fail);
-  //         })
-  //     } else {
-  //       reject('There is not element with such index in collection');
-  //     }
-  //   });
-  // }
+  @action('remove')
+  remove(model) {
+    return new Promise((resolve, reject) => {
+      const index = this.originalDicta.indexOf(model);
+      if (index > -1) {
+        return http.delete('dicta/' + model.id)
+          .then((response) => {
+            this.originalDicta.splice(index, 1);
+            resolve();
+          })
+          .catch((fail) => {
+            if (fail.response) {
+              if (String(fail.response.status) === '422') {
+                reject(new ValidationError(fail.response.data));
+              } else {
+                reject(fail.response.data);
+              }
+            } else {
+              reject(fail);
+            }
+          });
+      } else {
+        reject(new Error('Model not found')); // TODO: add NotFound exception
+      }
+    });
+  }
+
 }

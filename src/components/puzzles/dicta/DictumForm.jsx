@@ -7,7 +7,6 @@ import { Button, Panel } from "react-bootstrap";
 import {TranslationBox} from "./TranslationBox";
 import classNames from 'classnames';
 
-
 @observer
 export class DictumForm extends React.Component {
  
@@ -48,7 +47,7 @@ export class DictumForm extends React.Component {
   render() {
     return (
       <div id="dictum-form">
-        <form>
+        <form onSubmit={this.props.form.onSubmit}>
           <GroupInput field={this.props.form.$('spelling')} hideErrors={true} placeholder="Original" noLabel={true}/>
 
           <fieldset>

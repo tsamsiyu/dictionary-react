@@ -4,42 +4,63 @@ import { schema } from 'normalizr';
 
 export class Container {
     _models = [];
+    _indexes = {};
 
-    make(name, data) {
-        if (name instanceof schema.Entity) {
-            name = name.key;
+    make(schemeOrName) {
+        let name;
+        if (schemeOrName instanceof schema.Entity) {
+            name = schemeOrName.key;
+        } else {
+            name = schemeOrName;
         }
-        return new Model(this, schemas[name], data);
+        return new Model(this, schemas[name]);
     }
 
-    put(name, model) {
-        if (name instanceof schema.Entity) {
-            name = name.key;
+    put(model) {
+        if (!Array.isArray(model.schema.key)) {
+            this._models[model.schema.key] = [];
         }
-        if (!Array.isArray(this._models[name])) {
-            this._models[name] = {};
+        this._models[model.schema.key].push(model);
+    }
+
+    create(schemeOrName, data) {
+        const model = this.make(schemeOrName);
+        this.put(model);
+        if (typeof data === 'object') {
+            model.populate(data);
+            data.id && this.index(model);
+        } else if (data) {
+            model.populate({id: data});
+            this.index(model);
         }
-        // if (!model instanceof Model) {
-            // console.log('make', model);
-            model = this.make(name, model);
-        // }
-        if (!model.id) {
-            model.hashCode = Math.random().toString(36).substring(7);
-        } else {
-            model.hashCode = model.id;
-        }
-        this._models[name][model.hashCode] = model;
         return model;
+    }
+
+    index(model, attr = 'id') {
+        if (model.id && model.schema.key) {
+            if (!this._indexes[model.schema.key]) {
+                this._indexes[model.schema.key] = {};
+            }
+            if (!this._indexes[model.schema.key][attr]) {
+                this._indexes[model.schema.key][attr] = {};
+            }
+            this._indexes[model.schema.key][attr][model[attr]] = model;
+        }
     }
 
     putFlatList(entities) {
         const res = {};
+        const toPopulate = [];
         Object.keys(entities).forEach((name) => {
-            res[name] = {};
+            res[name] = [];
             Object.keys(entities[name]).forEach((id) => {
-                const model = this.put(name, entities[name][id]);
-                res[name][model.hashCode] = model;
+                const model = this.create(name, id);
+                res[name].push(model);
+                toPopulate.push([model, entities[name][id]]);
             });
+        });
+        toPopulate.forEach(([model, object]) => {
+            model.populate(object);
         });
         return res;
     }
@@ -48,12 +69,13 @@ export class Container {
         if (!this._models[name]) {
             return null;
         }
+        console.log(this._indexes);
         if (Array.isArray(id)) {
             return id.map((id) => {
-                return this._models[name][id];
+                return this._indexes[name].id[id];
             });
         } else {
-            return this._models[name][id];
+            return this._indexes[name].id[id];
         }
     }
 }
