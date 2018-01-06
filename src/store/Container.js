@@ -69,7 +69,6 @@ export class Container {
         if (!this._models[name]) {
             return null;
         }
-        console.log(this._indexes);
         if (Array.isArray(id)) {
             return id.map((id) => {
                 return this._indexes[name].id[id];

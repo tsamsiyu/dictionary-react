@@ -37,7 +37,6 @@ export class Model {
                 let value;
                 if (this.relations[attribute]) {
                     value = this.container.mapById(this.relations[attribute].key, data[attribute]);
-                    console.log(attribute, this.relations[attribute].key,  data[attribute], value);
                 } else {
                     value = data[attribute];
                 }

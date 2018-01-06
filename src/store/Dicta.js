@@ -14,7 +14,6 @@ export class Dicta {
       .then((response) => {
         const flatList = normalize(response.data.data, [originalDictum]);
         const models = stores.containerStore.putFlatList(flatList.entities);
-        console.log(models);
         this.originalDicta = Object.values(models.originalDictum);
       }).catch((fail) => {
         console.error(fail);
@@ -49,7 +48,9 @@ export class Dicta {
       if (index > -1) {
         return http.delete('dicta/' + model.id)
           .then((response) => {
-            this.originalDicta.splice(index, 1);
+            this.originalDicta = this.originalDicta.filter((item) => {
+              return String(item.id) !== String(model.id);
+            });
             resolve();
           })
           .catch((fail) => {

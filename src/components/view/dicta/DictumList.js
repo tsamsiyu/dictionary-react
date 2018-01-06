@@ -24,6 +24,7 @@ export class DictumList extends React.Component {
     this.props.dictaStore.create(values)
     .then(() => {
       this.setState({adding: false});
+      this.props.dictaStore.load();
     })
     .catch((err) => {
       if (err instanceof ValidationError) {
@@ -38,7 +39,9 @@ export class DictumList extends React.Component {
   }
 
   drop(dictum) {
-    this.props.dictaStore.remove(dictum);
+    this.props.dictaStore.remove(dictum).then(() => {
+      this.props.dictaStore.load();
+    });
   }
 
   componentWillMount() {
