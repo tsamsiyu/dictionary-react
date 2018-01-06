@@ -48,13 +48,26 @@ export class Container {
         }
     }
 
+    getIndex(name, value, attr = 'id') {
+        if (typeof this._indexes[name] !== 'object') {
+            return null;
+        }
+        if (typeof this._indexes[name][attr] !== 'object') {
+            return null;
+        }
+        return this._indexes[name][attr][value] || null;
+    }
+
     putFlatList(entities) {
         const res = {};
         const toPopulate = [];
         Object.keys(entities).forEach((name) => {
             res[name] = [];
             Object.keys(entities[name]).forEach((id) => {
-                const model = this.create(name, id);
+                let model = this.getIndex(name, id);
+                if (!model) {
+                    model = this.create(name, id);
+                }
                 res[name].push(model);
                 toPopulate.push([model, entities[name][id]]);
             });
@@ -71,10 +84,10 @@ export class Container {
         }
         if (Array.isArray(id)) {
             return id.map((id) => {
-                return this._indexes[name].id[id];
+                return this.getIndex(name, id);
             });
         } else {
-            return this._indexes[name].id[id];
+            return this.getIndex(name, id);
         }
     }
 }

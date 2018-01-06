@@ -13,43 +13,65 @@ export class DictumFormModal extends React.Component {
     formType: 'simple',
   };
 
-  componentWillMount() {
+  createForm() {
     const fields = [
       'spelling',
 
-      'groups',
-      'groups[]',
-      'groups[].explanation',
+      'translation_groups',
+      'translation_groups[]',
+      'translation_groups[].explanation',
 
-      'groups[].translations',
-      'groups[].translations[]',
-      'groups[].translations[].spelling',
+      'translation_groups[].translations',
+      'translation_groups[].translations[]',
+      'translation_groups[].translations[].spelling',
+
+      'translations',
+      'translations[]',
+      'translations[].spelling',
     ];
 
     const labels = {
       'spelling': 'Original',
-      'groups[].explanation': 'Group',
-      'groups[].translations[].spelling': 'Translation',
+      'translation_groups[].explanation': 'Group',
+      'translation_groups[].translations[].spelling': 'Translation',
     };
 
-    let dictum;
-    if (!this.props.dictum) {
-      dictum = {
-        groups: [{
+    this.form = new Form({fields, labels, values: this.getFormValues(), hooks: {onSuccess: this.save}});
+  }
+
+  getFormValues(model) {
+    model = model !== undefined ? model : this.props.dictum;
+    if (model) {
+      return model.literal();
+    } else {
+      return {
+        translation_groups: [{
           explanation: '',
           translations: [{
             spelling: '',
           }]
-        }]
+        }],
+        translations: [{
+          spelling: '',
+        }],
       };
-    } else {
-      dictum = this.props.dictum;
     }
+  }
 
-    this.form = new Form({fields, labels, values: dictum, hooks: {onSuccess: this.save}});
+  componentWillMount() {
+    this.createForm();
   }
 
   componentWillUpdate(newProps) {
+    if (newProps.dictum !== this.props.dictum) {
+      this.form.update(this.getFormValues(newProps.dictum));
+
+      if (newProps.dictum && newProps.dictum.translation_groups.length) {
+        this.setState({formType: 'complex'});
+      } else {
+        this.setState({formType: 'simple'});
+      }
+    }
     if (newProps.errors) {
       this.form.showErrors(false);
       this.form.fillErrors(newProps.errors);
@@ -69,7 +91,7 @@ export class DictumFormModal extends React.Component {
   save() {
     const values = this.form.values();
     values.dataType = this.state.formType;
-    this.props.onSave(values);
+    this.props.onSave(this.props.dictum, values);
   }
 
   render() {

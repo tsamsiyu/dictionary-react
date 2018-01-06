@@ -2,43 +2,52 @@ import React from 'react';
 import { observer, inject } from 'mobx-react';
 import { DictumFormModal } from "components/puzzles/dicta/DictumFormModal";
 import { ValidationError } from "errors/ValidationError";
-import { Grid } from 'components/ui/grid/Grid';
-import { Button } from 'react-bootstrap';
-import Fa from 'react-fontawesome';
-import Dotdotdot from 'react-dotdotdot'
+import { DictaGrid } from 'components/puzzles/dicta/DictaGrid';
 
 @inject('dictaStore')
 @observer
 export class DictumList extends React.Component {
   state = {
-    adding: false,
+    formEnabled: false,
     formDictum: null,
     formErrors: null,
   };
 
-  finishAdding() {
-    this.setState({adding: false});
+  disableForm() {
+    this.setState({formEnabled: false});
   }
 
-  saveChanges(values) {
-    this.props.dictaStore.create(values)
-    .then(() => {
-      this.setState({adding: false});
+  saveChanges(model, values) {
+    let promise;
+    if (model && model.id) {
+      promise = this.props.dictaStore.update(model, values);
+    } else {
+      promise = this.props.dictaStore.create(values);
+    }
+    promise.then(() => {
+      this.disableForm();
       this.props.dictaStore.load();
     })
     .catch((err) => {
       if (err instanceof ValidationError) {
         this.setState({formErrors: err.fails})
+      } else {
+        // TODO
       }
     });
   }
 
   add() {
     this.setState({formDictum: null});
-    this.setState({adding: true});
+    this.setState({formEnabled: true});
   }
 
-  drop(dictum) {
+  edit(dictum) {
+    this.setState({formDictum: dictum});
+    this.setState({formEnabled: true});
+  }
+
+  remove(dictum) {
     this.props.dictaStore.remove(dictum).then(() => {
       this.props.dictaStore.load();
     });
@@ -46,40 +55,6 @@ export class DictumList extends React.Component {
 
   componentWillMount() {
     this.props.dictaStore.load();
-    this.columns = [
-      {
-        key: 'id',
-        title: 'ID',
-      },
-      {
-        key: 'spelling',
-        title: 'Original',
-      },
-      {
-        key: 'translation',
-        title: 'Translation',
-        value: (row) => {
-          return (
-            <Dotdotdot clamp='auto'>
-              { row.translations.map((t) => t ? t.spelling : '').join(', ') }
-            </Dotdotdot>
-          )
-        }
-      },
-      {
-        key: 'action',
-        title: '',
-        value: (row) => {
-          return (
-            <div className="dictum-actions">
-              <Button bsStyle="link" className="pd-0" onClick={this.drop.bind(this, row)}>
-                <Fa name="trash"/>
-              </Button>
-            </div>
-          )
-        }
-      }
-    ];
   }
 
   render() {
@@ -87,12 +62,14 @@ export class DictumList extends React.Component {
       <div className="row">
         <button type="button" className="btn btn-primary mg-b-10" onClick={this.add.bind(this)}>New</button>
 
-        <Grid columns={this.columns} rows={this.props.dictaStore.originalDicta} />
+        <DictaGrid  dicta={this.props.dictaStore.originalDicta}
+                    edit={this.edit.bind(this)}
+                    remove={this.remove.bind(this)} />
 
-        <DictumFormModal isOpen={this.state.adding}
+        <DictumFormModal isOpen={this.state.formEnabled}
                          errors={this.state.formErrors}
                          dictum={this.state.formDictum}
-                         onHide={this.finishAdding.bind(this)}
+                         onHide={this.disableForm.bind(this)}
                          onSave={this.saveChanges.bind(this)}/>
       </div>
     );

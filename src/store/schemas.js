@@ -10,11 +10,11 @@ originalDictum.define({translation_groups: [translationDictumGroup]});
 translationDictum.define({group: translationDictumGroup});
 translationDictum.define({original: originalDictum});
 
-translationDictumGroup.define({originalDictum});
+translationDictumGroup.define({original: originalDictum});
 translationDictumGroup.define({translations: [translationDictum]});
 
 export const schemas = {
     'translationDictum': translationDictum,
-    'ranslationDictumGroup': translationDictumGroup,
+    'translationDictumGroup': translationDictumGroup,
     'originalDictum': originalDictum,
 }

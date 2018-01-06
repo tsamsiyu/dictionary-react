@@ -6,7 +6,7 @@ export class Model {
 
         Object.defineProperty(this, 'relations', {
             writable: false,
-            enumerable: false,
+            enumerable: true,
             configurable: false,
             value: Object.keys(schema.schema).reduce((reducer, name) => {
                 const relationSchema = schema.schema[name];
@@ -42,17 +42,32 @@ export class Model {
                 }
                 Object.defineProperty(this._initialData, attribute, {
                     configurable: false,
-                    enumerable: false,
+                    enumerable: true,
                     writable: false,
                     value,
                 });
                 Object.defineProperty(this, attribute, {
                     configurable: false,
-                    enumerable: false,
+                    enumerable: true,
                     writable: true,
                     value: this._initialData[attribute],
                 });
             });
         }
+    }
+
+    literal() {
+        return Object.keys(this._initialData).reduce((reducer, prop) => {
+            if (this[prop] instanceof Model) {
+                reducer[prop] = this[prop].literal();
+            } else if (Array.isArray(this[prop]) && 
+                        this[prop].length && 
+                        this[prop][0] instanceof Model) {
+                reducer[prop] = this[prop].map(item => item.literal());
+            } else {
+                reducer[prop] = this[prop];
+            }
+            return reducer;
+        }, {});
     }
 }
