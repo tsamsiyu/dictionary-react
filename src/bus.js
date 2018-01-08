@@ -5,6 +5,8 @@ import { Container } from 'store/Container';
 import { Dicta } from 'store/Dicta';
 import { trimEnd } from 'lodash';
 
+import 'store2/Dictum'
+
 const baseUrl = trimEnd(process.env.REACT_APP_API_URL);
 const headers = {
   'Content-Type': 'application/json',
