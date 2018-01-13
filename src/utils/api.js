@@ -1,6 +1,7 @@
-import { ValidationError } from "errors/ValidationError";
+import { ValidationError } from "errors/ValidationError"
+import { http } from 'bus'
 
-export function httpModelHandler(promise) {
+export function send(promise) {
     return promise
         .then((response) => {
             return response.data;

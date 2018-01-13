@@ -1,0 +1,9 @@
+export const ACTIONS = {
+    LOAD_AUTH: 'LOAD_AUTH',
+    DICTA: {
+        FETCH: 'DICTA_FETCH',
+        REQUESTING: 'DICTA_REQUESTING',
+        RECEIVED: 'DICTA_RECEIVED',
+        REJECTED: 'DICTA_REJECTED',
+    }
+}
