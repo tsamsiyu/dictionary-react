@@ -2,26 +2,20 @@ import { ACTIONS } from 'store/actions';
 
 export function fetchDicta() {
     return {
-        type: ACTIONS.DICTA.FETCH,
+        type: ACTIONS.DICTA.REQUESTING,
     }
 }
 
-export function requestingDicta() {
+export function receivedDicta(flatList) {
     return {
-        type: ACTIONS.DICTA.FETCHING,
-    }
-}
-
-export function receivedDicta(dicta) {
-    return {
-        type: ACTIONS.DICTA.FETCHED,
-        dicta,
+        type: ACTIONS.DICTA.RECEIVED,
+        flatList,
     }
 }
 
 export function rejectedDicta(error) {
     return {
-        type: ACTIONS.DICTA.FAILED,
+        type: ACTIONS.DICTA.REJECTED,
         error,
     }
 }

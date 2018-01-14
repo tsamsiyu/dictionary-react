@@ -1,11 +1,11 @@
-import React from 'react';
-import {Redirect, Route, withRouter} from 'react-router-dom';
-import config from 'config/index';
-import { inject, observer } from 'mobx-react';
+import React from 'react'
+import {Redirect, Route, withRouter} from 'react-router-dom'
+import config from 'config/index'
+import { connect } from 'react-redux'
 
-const view = (Component, authStore) => {
+const view = (Component, user) => {
   return (props) => {
-    if (authStore.isAuthenticated) {
+    if (user) {
       return <Component {...props}/>
     } else {
       return <Redirect to={{
@@ -16,11 +16,14 @@ const view = (Component, authStore) => {
   }
 };
 
-
-const AuthRoute = ({component, authStore, ...routeProps}) => {
+const AuthRoute = ({component, user, ...routeProps}) => {
   return (
-    <Route {...routeProps} render={view(component, authStore)}/>
+    <Route {...routeProps} render={view(component, user)}/>
   );
 };
 
-export default inject('authStore')(observer(withRouter(AuthRoute)));
+const connector = connect((state) => ({
+  user: state.auth.user  
+}))
+
+export default withRouter(connector(AuthRoute));

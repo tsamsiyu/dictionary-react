@@ -1,4 +1,4 @@
-import { send } from 'core/utils/api'
+import { send } from 'utils/api'
 import { http } from 'bus'
 
 export function fetchPage() {

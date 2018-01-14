@@ -1,5 +1,4 @@
 import { ValidationError } from "errors/ValidationError"
-import { http } from 'bus'
 
 export function send(promise) {
     return promise
