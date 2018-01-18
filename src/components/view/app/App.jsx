@@ -9,7 +9,7 @@ import { connect } from 'react-redux'
 import NotFound from "components/view/errors/NotFound"
 import Login from "components/view/login/Login"
 import Logout from 'components/view/logout/Logout'
-import Profile from 'components/view/profile/Profile'
+import { Profile } from 'components/view/profile/Profile'
 // Assets
 import "components/view/app/App.css"
 

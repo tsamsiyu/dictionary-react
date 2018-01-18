@@ -1,15 +1,28 @@
 import React from 'react';
 // import { observer, inject } from 'mobx-react';
-// import { DictumFormModal } from "components/puzzles/dicta/DictumFormModal";
+import { DictumFormModal } from "components/puzzles/dicta/DictumFormModal";
 // import { ValidationError } from "errors/ValidationError";
 // import { DictaGrid } from 'components/puzzles/dicta/DictaGrid';
 
 export class DictumList extends React.Component {
+  state = {
+    modalOpened: false
+  }
+
+  showModal() {
+    this.setState({modalOpened: true})
+  }
+
+  hideModal() {
+    this.setState({modalOpened: false})
+  }
 
   render() {
     return (
-      <div>
-        dictum list
+      <div className="row">
+        <button type="button" className="btn btn-primary mg-b-10" onClick={this.showModal.bind(this)}>New</button>
+        <DictumFormModal isOpen={this.state.modalOpened} 
+                          onHide={this.hideModal.bind(this)} />
       </div>
     )
   }

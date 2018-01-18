@@ -6,15 +6,17 @@ import { authReducer } from 'store/auth/reducer'
 import { dictaFlow } from 'store/dicta/flow'
 import { authFlow } from 'store/auth/flow'
 import { createLogger } from 'redux-logger'
+import { reducer as formReducer } from 'redux-form'
 
 const sagaMiddleware = createSagaMiddleware()
 const loggerMiddleware = createLogger({
     collapsed: true
 })
 
-const reducers = combineReducers({
+const rootReducer = combineReducers({
     dicta: dictaReducer,
     auth: authReducer,
+    form: formReducer,
 })
 
 const middlewares = applyMiddleware(
@@ -22,7 +24,7 @@ const middlewares = applyMiddleware(
     loggerMiddleware,
 );
 
-export const store = createStore(reducers, middlewares)
+export const store = createStore(rootReducer, middlewares)
 
 sagaMiddleware.run(authFlow)
 sagaMiddleware.run(dictaFlow)

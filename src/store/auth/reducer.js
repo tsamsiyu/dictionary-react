@@ -8,7 +8,6 @@ const initialState = {
 }
 
 export function authReducer(state = initialState, {type, user, error}) {
-    console.log(type);
     switch(type) {
         case ACTIONS.AUTH.CURRENT_USER_FETCHING:
             return { ...state, status: STATUSES.REQUESTING }

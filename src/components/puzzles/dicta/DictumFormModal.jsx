@@ -1,97 +1,28 @@
-import React from 'react';
-import { Form } from 'core/Form';
-import { Modal, Button } from 'react-bootstrap';
-import { DictumForm } from "components/puzzles/dicta/DictumForm";
-import Fa from 'react-fontawesome';
-import classNames from 'classnames';
-import 'components/puzzles/dicta/DictumFormModal.scss';
-import { observer } from 'mobx-react';
+import React from 'react'
+import { Modal, Button } from 'react-bootstrap'
+import { DictumForm } from "components/puzzles/dicta/DictumForm"
+import Fa from 'react-fontawesome'
+import classNames from 'classnames'
+import 'components/puzzles/dicta/DictumFormModal.scss'
 
-@observer
 export class DictumFormModal extends React.Component {
   state = {
     formType: 'simple',
-  };
-
-  createForm() {
-    const fields = [
-      'spelling',
-
-      'translation_groups',
-      'translation_groups[]',
-      'translation_groups[].explanation',
-
-      'translation_groups[].translations',
-      'translation_groups[].translations[]',
-      'translation_groups[].translations[].spelling',
-
-      'translations',
-      'translations[]',
-      'translations[].spelling',
-    ];
-
-    const labels = {
-      'spelling': 'Original',
-      'translation_groups[].explanation': 'Group',
-      'translation_groups[].translations[].spelling': 'Translation',
-    };
-
-    this.form = new Form({fields, labels, values: this.getFormValues(), hooks: {onSuccess: this.save}});
-  }
-
-  getFormValues(model) {
-    model = model !== undefined ? model : this.props.dictum;
-    if (model) {
-      return model.literal();
-    } else {
-      return {
-        translation_groups: [{
-          explanation: '',
-          translations: [{
-            spelling: '',
-          }]
-        }],
-        translations: [{
-          spelling: '',
-        }],
-      };
-    }
-  }
-
-  componentWillMount() {
-    this.createForm();
-  }
-
-  componentWillUpdate(newProps) {
-    if (newProps.dictum !== this.props.dictum) {
-      this.form.update(this.getFormValues(newProps.dictum));
-
-      if (newProps.dictum && newProps.dictum.translation_groups.length) {
-        this.setState({formType: 'complex'});
-      } else {
-        this.setState({formType: 'simple'});
-      }
-    }
-    if (newProps.errors) {
-      this.form.showErrors(false);
-      this.form.fillErrors(newProps.errors);
-    }
   }
 
   switchSimpleType() {
-    this.form.showErrors(false); // TODO
-    this.setState({formType: 'simple'});
+    this.setState({formType: 'simple'})
   }
 
   switchComplexType() {
-    this.form.showErrors(false); // TODO
-    this.setState({formType: 'complex'});
+    this.setState({formType: 'complex'})
   }
 
   save() {
-    const values = this.form.values();
-    values.dataType = this.state.formType;
-    this.props.onSave(this.props.dictum, values);
+    console.log("save")
+    // const values = this.form.values();
+    // values.dataType = this.state.formType;
+    // this.props.onSave(this.props.dictum, values);
   }
 
   render() {

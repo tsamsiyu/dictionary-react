@@ -1,0 +1,14 @@
+#form-type {
+  button {
+    border-radius: 2px;
+    border: none;
+    margin: 1px;
+    &:focus,&:active {
+      outline: none;
+    }
+    &.active {
+      background-color: #d4c4cd;
+    }
+  }
+  margin-bottom: 10px;
+}

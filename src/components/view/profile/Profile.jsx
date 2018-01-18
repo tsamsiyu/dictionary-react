@@ -1,7 +1,7 @@
 import React from 'react';
 import { LinkContainer } from "react-router-bootstrap";
 
-class ProfileView extends React.Component {
+export class Profile extends React.Component {
   render() {
     return (
       <div>
@@ -14,5 +14,3 @@ class ProfileView extends React.Component {
     )
   }
 }
-
-export default ProfileView;
