@@ -1,7 +1,7 @@
 import { ACTIONS } from 'store/actions'
 
 const initialState = {
-    requesting: false,
+    fail: null,
     error: null,
     originalDicta: [],
     translationDicta: [],
@@ -10,12 +10,14 @@ const initialState = {
 
 export function dictaReducer(state = initialState, action) {
     switch(action.type) {
-        case ACTIONS.DICTA.REQUESTING: 
-            return { ...state, loading: true }
-        case ACTIONS.DICTA.RECEIVED: 
-            return { ...state, loading: false, ...action.flatList.entities }
-        case ACTIONS.DICTA.REJECTED:
-            return { ...state, loading: false, error: action.error }
+        case ACTIONS.DICTA.FETCH_REQUEST: 
+            return { ...state }
+        case ACTIONS.DICTA.FETCH_RECEIVED: 
+            return { ...state, ...action.flatList.entities }
+        case ACTIONS.DICTA.FETCH_REJECTED:
+            return { ...state, fail: action.fail }
+        case ACTIONS.DICTA.CREATE_INVALIDATED:
+            return { ...state, error: action.error }
         default:
             return state
     }

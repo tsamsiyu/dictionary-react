@@ -1,20 +1,35 @@
 import { originalDictum } from 'store/schemas'
-import { receivedDicta, rejectedDicta } from 'store/dicta/actionCreators'
-import { fetchPage } from 'store/dicta/api'
+import actions from 'store/dicta/actionCreators'
+import api from 'store/dicta/api'
 import { call, takeLatest, put } from 'redux-saga/effects'
 import { ACTIONS } from 'store/actions'
 import { normalize } from 'normalizr'
+import { ValidationError } from 'errors/ValidationError'
 
-export function* dictaFetchFlow(action) {
+function* fetchFlow(action) {
     try {
-        const response = yield call(fetchPage)
+        const response = yield call(api.fetchDictaPage)
         const flatList = normalize(response.data, [originalDictum])
-        yield put(receivedDicta(flatList))
+        yield put(actions.fetchReceived(flatList))
     } catch (error) {
-        yield put(rejectedDicta(error))
+        yield put(actions.fetchRejected(error))
+    }
+}
+
+function* createFlow(action) {
+    try {
+        const response = yield call(api.createDictum, action.dictum)
+        yield put(actions.createReceived(response.data))
+    } catch (error) {
+        if (error instanceof ValidationError) {
+            yield put(actions.createInvalidated(error))
+        } else {
+            yield put(actions.createRejected(error))
+        }
     }
 }
 
 export function* dictaFlow() {
-    yield takeLatest(ACTIONS.DICTA.REQUESTING, dictaFetchFlow)
+    yield takeLatest(ACTIONS.DICTA.FETCH_REQUEST, fetchFlow)
+    yield takeLatest(ACTIONS.DICTA.CREATE_REQUEST, createFlow)
 }

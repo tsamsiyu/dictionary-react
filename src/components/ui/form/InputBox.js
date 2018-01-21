@@ -1,12 +1,19 @@
 import React from 'react';
-import classNames from 'classnames';
+import classnames from 'classnames';
 
-export default ({error, className, showErrors = true, children, noLabel, inputId, label}) => {
+export default ({className, children, controlId, label, labelClass, errors, showErrors = true,}) => {
+  const invalid = Array.isArray(errors) && errors.length;
   return (
-    <div className={classNames('form-group', {'has-error': error}, className)}>
-      { label && (<label for={inputId}>{label}</label>) }
+    <div className={classnames('form-group', {'has-error': invalid}, className)}>
+      { label && (<label for={controlId} className={classnames('control-label', labelClass)}>{label}</label>) }
       {children}
-      { showErrors && error && (<p className="text-danger">{error}</p>) }
+      { showErrors && invalid && (
+        <div className="invalid-messages">
+          {errors.map((msg, index) => (
+            <p className="text-danger" key={index}>{msg}</p>
+          ))}
+        </div>
+      ) }
     </div>
   );
 };

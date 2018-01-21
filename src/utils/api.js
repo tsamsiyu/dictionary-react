@@ -1,4 +1,5 @@
 import { ValidationError } from "errors/ValidationError"
+import { ServerError } from "errors/ServerError"
 
 export function send(promise) {
     return promise
@@ -8,14 +9,12 @@ export function send(promise) {
         .catch((fail) => {
             if (fail.response) {
                 if (String(fail.response.status) === '422') {
-                    return new ValidationError(fail.response.data);
+                    throw new ValidationError(fail.response.data);
                 } else {
-                    console.error(fail);
-                    return fail.response.data;
+                    throw new ServerError(fail.response.data);
                 }
             } else {
-                console.error(fail);
-                return fail;
+                throw fail;
             }
         });
 }

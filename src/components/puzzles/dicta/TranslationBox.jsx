@@ -5,16 +5,13 @@ import InputBox from 'components/ui/form/InputBox'
 import { Button } from "react-bootstrap"
 import classNames from 'classnames'
 import Fa from 'react-fontawesome'
+import { Input } from 'components/ui/redux-form-fields/Input'
 
 export class TranslationBox extends React.Component {
-    render() {
+    renderInputComponent({input, meta}) {
         return (
-            <InputBox showErrors={false} className="translation-box">
-                <Field name={this.props.controlName}
-                        component="input"
-                        type="text" 
-                        className="form-control"
-                        placeholder="Translation" />
+            <InputBox showErrors={false} className="translation-box" errors={meta.error}>
+                <Input input={input} meta={meta} placeholder="Translation" />
                 <div className="translation-actions">
                     <Button bsStyle="link"
                             onClick={this.props.delete}
@@ -23,6 +20,12 @@ export class TranslationBox extends React.Component {
                     </Button>
                 </div>
             </InputBox>
+        );
+    }
+
+    render() {
+        return (
+            <Field name={this.props.controlName} component={this.renderInputComponent.bind(this)} />
         )
     }
 }

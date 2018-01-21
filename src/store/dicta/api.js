@@ -1,6 +1,11 @@
 import { send } from 'utils/api'
 import { http } from 'bus'
 
-export function fetchPage() {
-    return send(http.get('dicta'))
+export default {
+    fetchDictaPage() {
+        return send(http.get('dicta'))
+    },
+    createDictum(dictum) {
+        return send(http.post('dicta', dictum))
+    }
 }

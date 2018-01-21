@@ -1,17 +1,17 @@
 import 'components/puzzles/dicta/DictumForm.scss'
 import React from 'react'
 import { Field, FieldArray, reduxForm } from 'redux-form'
-import InputBox from 'components/ui/form/InputBox'
 import Fa from 'react-fontawesome'
 import { Button, Panel } from "react-bootstrap"
-import classNames from 'classnames';
-import { TranslationBox } from "components/puzzles/dicta/TranslationBox";
+import classNames from 'classnames'
+import { TranslationBox } from "components/puzzles/dicta/TranslationBox"
 import { connect } from "react-redux"
+import { BoxedInput } from 'components/ui/redux-form-fields/BoxedInput'
 
 const renderTranslations = ({fields}) => {
     return fields.map((translation, index) => (
-                <TranslationBox controlName={`${translation}.spelling`} 
-                                key={index}
+                <TranslationBox key={index}
+                                controlName={`${translation}.spelling`} 
                                 delete={ () => fields.remove(index) }
                                 canDelete={fields.length > 1} />
             ));
@@ -23,13 +23,7 @@ const renderGroups = ({fields, addTranslation}) => {
         const btnGroupDropClass = classNames('translation-group-drop', {inactive: fields.length < 2});
         return (
             <div>
-                <InputBox showErrors={false}>
-                    <Field name={`${group}.explanation`} 
-                            component="input"
-                            type="text" 
-                            className="form-control"
-                            placeholder="Group" />
-                </InputBox>
+                <Field name={`${group}.explanation`} component={BoxedInput} placeholder="Group" />
                 <div className="translation-group-actions">
                     <Button onClick={() => addTranslation(index) } bsStyle="link" className="translation-group-add">
                         <Fa name="plus"/>
@@ -59,11 +53,6 @@ const renderGroups = ({fields, addTranslation}) => {
     form: 'dictumForm',
 })
 export class DictumForm extends React.Component {
-    handleSubmit() {
-        console.log("handle submit");
-        return false;
-    }
-
     addEntity() {
         if (this.props.type === 'simple') {
             this.props.array.push('translations', {});
@@ -80,14 +69,8 @@ export class DictumForm extends React.Component {
         const entityName = this.props.type === 'simple' ? 'Translations' : 'Groups';
         return (
             <div id="dictum-form">
-                <form onSubmit={this.handleSubmit.bind(this)}>
-                    <InputBox showErrors={false}>
-                        <Field name="spelling" 
-                                component="input"
-                                type="text" 
-                                className="form-control"
-                                placeholder="Original" />
-                    </InputBox>
+                <form onSubmit={this.props.handleSubmit}>
+                    <Field name="spelling" component={BoxedInput} placeholder="Original" />
 
                     <fieldset>
                         <legend id="translation-legend">
