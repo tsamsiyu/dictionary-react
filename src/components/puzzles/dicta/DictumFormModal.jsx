@@ -45,7 +45,7 @@ export class DictumFormModal extends React.Component {
         </Modal.Header>
 
         <Modal.Body>
-          <DictumForm form={this.form} type={this.state.formType}/>
+          <DictumForm type={this.state.formType}/>
         </Modal.Body>
 
         <Modal.Footer>
