@@ -7,10 +7,12 @@ export class BoxedInput extends React.Component {
         return (
             <InputBox showErrors={this.props.showErrors}
                         label={this.props.label}
+                        className={this.props.className}
                         labelClass={this.props.labelClass}
                         errors={this.props.meta.error}>
                 <Input input={this.props.input} 
                         placeholder={this.props.placeholder}
+                        className={this.props.controlClass}
                         meta={this.props.meta}
                         label={this.props.label} />
             </InputBox>

@@ -9,7 +9,7 @@ export class ValidationError extends ExtendableError {
       this.formFails = {}
       this.fails = []
       Object.keys(message).forEach((dotKey) => {
-        const formKey = dotKey.replace(/\.(\d+)(\.)?/, '[$1]$2');
+        const formKey = dotKey.replace(/\.(\d+)(\.)?/gi, '[$1]$2');
         this.formFails[formKey] = this.dotFails[dotKey];
       });
       Object.keys(message).forEach((key) => {

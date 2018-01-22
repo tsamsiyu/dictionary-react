@@ -3,7 +3,7 @@ import classnames from 'classnames'
 
 export class Input extends React.Component {
     render() {
-        const controlClass = classnames('form-control', this.props.controlClass)
+        const controlClass = classnames('form-control', this.props.className)
 
         return (
             <input {...this.props.input}

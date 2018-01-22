@@ -11,7 +11,7 @@ export class TranslationBox extends React.Component {
     renderInputComponent({input, meta}) {
         return (
             <InputBox showErrors={false} className="translation-box" errors={meta.error}>
-                <Input input={input} meta={meta} placeholder="Translation" />
+                <Input input={input} meta={meta} placeholder="Translation" className="md-control"/>
                 <div className="translation-actions">
                     <Button bsStyle="link"
                             onClick={this.props.delete}

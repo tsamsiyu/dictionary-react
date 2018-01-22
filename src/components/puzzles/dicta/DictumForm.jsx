@@ -19,7 +19,6 @@ const renderTranslations = ({fields}) => {
 
 const renderGroups = ({fields, addTranslation}) => {
     const renderGroupHeader = (group, index) => {
-
         const btnGroupDropClass = classNames('translation-group-drop', {inactive: fields.length < 2});
         return (
             <div>
@@ -45,7 +44,6 @@ const renderGroups = ({fields, addTranslation}) => {
 
 @connect((state) => ({
     initialValues: {
-        translations: [{}],
         groups: [{translations: [{}]}],
     }
 }))
@@ -53,12 +51,8 @@ const renderGroups = ({fields, addTranslation}) => {
     form: 'dictumForm',
 })
 export class DictumForm extends React.Component {
-    addEntity() {
-        if (this.props.type === 'simple') {
-            this.props.array.push('translations', {});
-        } else {
-            this.props.array.push('groups', {translations: [{}]});
-        }
+    addGroup() {
+        this.props.array.push('groups', {translations: [{}]});
     }
 
     addTranslationToGroup(index) {
@@ -66,27 +60,21 @@ export class DictumForm extends React.Component {
     }
 
     render() {
-        const entityName = this.props.type === 'simple' ? 'Translations' : 'Groups';
         return (
             <div id="dictum-form">
                 <form onSubmit={this.props.handleSubmit}>
-                    <Field name="spelling" component={BoxedInput} placeholder="Original" />
+                    <Field name="spelling" component={BoxedInput} placeholder="Original" controlClass="md-control" />
 
                     <fieldset>
                         <legend id="translation-legend">
-                            <Button onClick={ () => this.addEntity() } bsStyle="link">
+                            <Button onClick={ () => this.addGroup() } bsStyle="link">
                                 <Fa name="plus"/>
                             </Button>
-                            <p>{entityName}</p>
+                            <p>Groups</p>
                         </legend>
-                        { this.props.type === 'simple' && (
-                            <FieldArray name="translations" component={renderTranslations} />
-                        ) }
-                        { this.props.type === 'complex' && (
-                            <FieldArray name="groups" 
-                                        component={renderGroups} 
-                                        addTranslation={this.addTranslationToGroup.bind(this)}/>
-                        ) }
+                        <FieldArray name="groups" 
+                                    component={renderGroups} 
+                                    addTranslation={this.addTranslationToGroup.bind(this)}/>
                     </fieldset>
                 </form>
             </div>
