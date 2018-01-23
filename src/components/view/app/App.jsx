@@ -7,7 +7,7 @@ import { DictumList } from "components/view/dicta/DictumList"
 import { connect } from 'react-redux'
 // View Routes
 import NotFound from "components/view/errors/NotFound"
-import Login from "components/view/login/Login"
+import { Login } from "components/view/login/Login"
 import Logout from 'components/view/logout/Logout'
 import { Profile } from 'components/view/profile/Profile'
 // Assets
@@ -26,7 +26,7 @@ export class App extends React.Component {
           <TopNav/>
         </header>
 
-        { this.props.user && (
+        { true && (
           <main className="main-content">
             <div className="container">
               <Switch>

@@ -17,7 +17,6 @@ export class DictumFormModal extends React.Component {
 
   onSubmit(dictum) {
     return this.props.create(dictum).catch(err => {
-      console.log(err.formFails)
       throw new SubmissionError(err.formFails)
     })
   }

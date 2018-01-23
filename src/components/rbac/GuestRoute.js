@@ -17,6 +17,7 @@ const view = (Component, user) => {
 };
 
 const GuestRoute = ({component, user, ...routeProps}) => {
+  console.log('guest route', user);
   return (
     <Route {...routeProps} render={view(component, user)}/>
   );

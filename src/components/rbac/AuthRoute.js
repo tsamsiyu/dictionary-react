@@ -17,6 +17,7 @@ const view = (Component, user) => {
 };
 
 const AuthRoute = ({component, user, ...routeProps}) => {
+  console.log('auth route', user);
   return (
     <Route {...routeProps} render={view(component, user)}/>
   );

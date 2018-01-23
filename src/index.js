@@ -13,9 +13,9 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import registerServiceWorker from 'registerServiceWorker'
 import { store } from 'store'
-import { currentUserFetch } from 'store/auth/actionCreators'
+import actions from 'store/auth/actionCreators'
 
-store.dispatch(currentUserFetch());
+store.dispatch(actions.currentUserFetch());
 
 ReactDOM.render(
   <BrowserRouter>

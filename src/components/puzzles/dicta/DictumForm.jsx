@@ -2,45 +2,10 @@ import 'components/puzzles/dicta/DictumForm.scss'
 import React from 'react'
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import Fa from 'react-fontawesome'
-import { Button, Panel } from "react-bootstrap"
-import classNames from 'classnames'
-import { TranslationBox } from "components/puzzles/dicta/TranslationBox"
+import { Button } from "react-bootstrap"
 import { connect } from "react-redux"
 import { BoxedInput } from 'components/ui/redux-form-fields/BoxedInput'
-
-const renderTranslations = ({fields}) => {
-    return fields.map((translation, index) => (
-                <TranslationBox key={index}
-                                controlName={`${translation}.spelling`} 
-                                delete={ () => fields.remove(index) }
-                                canDelete={fields.length > 1} />
-            ));
-}
-
-const renderGroups = ({fields, addTranslation}) => {
-    const renderGroupHeader = (group, index) => {
-        const btnGroupDropClass = classNames('translation-group-drop', {inactive: fields.length < 2});
-        return (
-            <div>
-                <Field name={`${group}.explanation`} component={BoxedInput} placeholder="Group" />
-                <div className="translation-group-actions">
-                    <Button onClick={() => addTranslation(index) } bsStyle="link" className="translation-group-add">
-                        <Fa name="plus"/>
-                    </Button>
-                    <Button onClick={ () => fields.remove(index) } bsStyle="link" className={btnGroupDropClass}>
-                        <Fa name="trash"/>
-                    </Button>
-                </div>
-            </div>
-        );
-    }
-
-    return fields.map((group, index) => (
-                <Panel key={index} header={renderGroupHeader(group, index)}  className="translation-group">
-                    <FieldArray key={index} name={`${group}.translations`} component={renderTranslations} />
-                </Panel>
-            ));
-}
+import { DictumFormGroup } from 'components/puzzles/dicta/DictumFormGroup'
 
 @connect((state) => ({
     initialValues: {
@@ -72,9 +37,7 @@ export class DictumForm extends React.Component {
                             </Button>
                             <p>Groups</p>
                         </legend>
-                        <FieldArray name="groups" 
-                                    component={renderGroups} 
-                                    addTranslation={this.addTranslationToGroup.bind(this)}/>
+                        <FieldArray name="groups" component={DictumFormGroup} addTranslation={ (index) => this.addTranslationToGroup(index) } />
                     </fieldset>
                 </form>
             </div>

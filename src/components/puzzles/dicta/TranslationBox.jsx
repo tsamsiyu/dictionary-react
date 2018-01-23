@@ -8,7 +8,7 @@ import Fa from 'react-fontawesome'
 import { Input } from 'components/ui/redux-form-fields/Input'
 
 export class TranslationBox extends React.Component {
-    renderInputComponent({input, meta}) {
+    renderInputComponent = ({input, meta}) => {
         return (
             <InputBox showErrors={false} className="translation-box" errors={meta.error}>
                 <Input input={input} meta={meta} placeholder="Translation" className="md-control"/>
@@ -23,9 +23,14 @@ export class TranslationBox extends React.Component {
         );
     }
 
+    constructor(...args) {
+        super(...args);
+        this.renderInputComponent = this.renderInputComponent.bind(this);
+    }
+
     render() {
         return (
-            <Field name={this.props.controlName} component={this.renderInputComponent.bind(this)} />
+            <Field name={this.props.controlName} component={this.renderInputComponent} />
         )
     }
 }
